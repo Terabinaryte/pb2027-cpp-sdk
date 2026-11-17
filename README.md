@@ -57,3 +57,15 @@ third_party/      vendor 依赖
 ## 协议
 
 以仓库根目录 `../protocol.md` 为准（SHA-256 `25ccf58a…`），本 SDK 的设计文档见 [PLAN.md](PLAN.md)。
+
+## License
+
+MIT; see [LICENSE](LICENSE).
+
+Vendored dependencies are under MIT as well and keep their upstream license
+texts in `third_party/`:
+
+- [websocketclient](third_party/websocketclient/LICENSE)
+- [doctest](third_party/doctest/LICENSE.txt)
+- [cpp-httplib](third_party/httplib/LICENSE)
+- [nlohmann/json](third_party/nlohmann/LICENSE.MIT)
