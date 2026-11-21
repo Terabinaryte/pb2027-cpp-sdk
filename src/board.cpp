@@ -366,6 +366,14 @@ void Board::observe(const Tick& tick) {
     for (const Sonar& sonar : tick.sonars) {
         impl_->sonar.add(sonar, tick.number);
     }
+    // Bound the local sonar history by observation age, not only by the
+    // (possibly stalled or heavily delayed) public version.  Otherwise a
+    // painter-only client that never advances the public canvas accumulates
+    // one FIFO record per sonar cell forever.
+    constexpr TickNumber kRetentionTicks = 1024;  // ~8 s at 128 tps
+    if (tick.number > kRetentionTicks) {
+        impl_->sonar.prune(tick.number - kRetentionTicks);
+    }
     impl_->sonar.prune(impl_->version);
 }
 

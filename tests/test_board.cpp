@@ -115,6 +115,18 @@ TEST_CASE("reset clears the canvas, the history layers and the sonar table") {
     CHECK(b.width() == 0);
 }
 
+TEST_CASE("observe bounds sonar history even without public progress") {
+    Board b;
+    b.reset(1, 1);
+    b.overlay(Sonar{0, 0, {rgb(9, 9, 9)}}, 1);
+    REQUIRE(b.sonar_at(0).has_value());
+
+    Tick t;
+    t.number = 2000;
+    b.observe(t);
+    CHECK_FALSE(b.sonar_at(0).has_value());
+}
+
 TEST_CASE("resolve_color is explicit and freshness-gated") {
     Board b;
     b.reset(1, 1);

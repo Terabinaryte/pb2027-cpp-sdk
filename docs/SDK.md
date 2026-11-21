@@ -515,7 +515,9 @@ if (auto brush = client.brush(slot); brush && brush->idx) {
 - 渲染/观察：`min_sonar_tick = current_tick - 2*probe_interval_ticks`；
 - 攻击检测：只接受“比上次写入更新”的 sonar，过期必须回退 public，不能让旧 sonar 抑制差异。
 
-注意：声纳只发给**发出该笔的连接**，同一 token 在其他连接/网页上画的内容不会变成你的声纳；`observe` 只处理本连接收到的 `Tick.sonars`。多连接时每个 painter 连接使用独立 `Board`，或给 `SonarObservation` 增加 source 后过滤。
+注意：声纳只发给**发出该笔的连接**，同一 token 在其他连接/网页上画的内容不会变成你的声纳；`observe` 只处理本连接收到的 `Tick.sonars`。
+
+`observe()` 还会按 **1024 tick（约 8 秒 @128 tps）** 修剪 sonar 历史，不只依赖延迟的 public version；否则只有 painter 连接、public 不前进时，sonar FIFO 会持续增长。多连接时每个 painter 连接使用独立 `Board`，或给 `SonarObservation` 增加 source 后过滤。
 
 ### 5.7 `api.hpp`
 
